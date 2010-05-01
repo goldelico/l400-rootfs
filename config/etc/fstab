@@ -1,0 +1,13 @@
+# UNCONFIGURED FSTAB FOR BASE SYSTEM
+# file system	mount point		type	options				dump pass
+proc			/proc			proc	defaults			0	0
+sys			/sys			sysfs	defaults			0	0
+shm			/dev/shm		tmpfs	nodev,nosuid,noexec	0	0
+devpts			/dev/pts		devpts	defaults			0	0
+/dev/nand		/mnt/nand1		yaffs2	noatime				0	0
+/dev/nand2		/mnt/nand2		auto	noatime				0	0
+/dev/mmc0p1		/mnt/sd			auto	noatime				0	0
+/dev/sda1		/mnt/usb1		auto	noatime				0	0
+/dev/sdb1		/mnt/usb2		auto	noatime				0	0
+/dev/sdc1		/mnt/usb3		auto	noatime				0	0
+tmpfs			/var/run		tmpfs	defaults			0	0
