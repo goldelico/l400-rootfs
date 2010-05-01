@@ -1,0 +1,23 @@
+#
+# script to be run after first install to upgrade to final system
+#
+
+depmod -a
+apt-get update
+
+# command line tools
+
+apt-get install -y dnsutils
+apt-get install -y udev
+# apt-get install -y zd1211-firmware
+apt-get install -y bluez-utils
+apt-get install -y openssh-server openssh-client
+apt-get install -y ntp
+
+# GUI
+
+# save a snapshot of the resulting system (copy from this SD to some server)
+# rm /boot/*.tbz
+# tar cvjf /boot/rootfs.tbz /
+
+rm postinst
