@@ -14,8 +14,9 @@ date 010100002015	# get rid of 'in the future' warnings from tar
 # command line tools
 
 apt-get install -y ntp
-apt-get install -y dnsutils
 apt-get install -y udev
+apt-get install -y dnsutils
+apt-get install -y usbmount
 # apt-get install -y zd1211-firmware
 apt-get install -y bluez-utils
 apt-get install -y openssh-server openssh-client
