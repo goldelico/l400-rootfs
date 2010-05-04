@@ -4,7 +4,7 @@
 #
 # this is part of Lenny400
 #
-# script to be run after first install to upgrade to final system
+# script to be run after first install to upgrade bootstrapped image to final image
 #
 
 depmod -a
@@ -14,14 +14,15 @@ date 010100002015	# get rid of 'in the future' warnings from tar
 # command line tools
 
 apt-get install -y ntp
+rm -rf /dev/.udev	# this is debris from bootstrapping
 apt-get install -y udev
 apt-get install -y dnsutils
 apt-get install -y usbmount
-# apt-get install -y zd1211-firmware
+# apt-get install -y zd1211-firmware	# does not work on mipsel
 apt-get install -y bluez-utils
 apt-get install -y openssh-server openssh-client
 
-# GUI
+# add any GUI components to load here
 
 # save a snapshot of the resulting system (copy from this SD to some server)
 # rm /boot/*.tbz
