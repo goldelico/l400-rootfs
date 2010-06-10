@@ -7,6 +7,8 @@
 # script to be run after first install to upgrade bootstrapped image to final image
 #
 
+umount /dev
+rm -rf /dev/.udev	# this is debris from bootstrapping
 depmod -a
 apt-get update
 date 010100002015	# get rid of 'in the future' warnings from tar
@@ -14,15 +16,27 @@ date 010100002015	# get rid of 'in the future' warnings from tar
 # command line tools
 
 apt-get install -y ntp
-rm -rf /dev/.udev	# this is debris from bootstrapping
 apt-get install -y udev
 apt-get install -y dnsutils
 apt-get install -y usbmount
 # apt-get install -y zd1211-firmware	# does not work on mipsel
 apt-get install -y bluez-utils
 apt-get install -y openssh-server openssh-client
+apt-get install -y usb_modeswitch
 
 # add any GUI components to load here
+
+# apt-get install gnome-core gdm
+# apt-get install kde-core kdm
+# apt-get install xfce4
+# apt-get install gdm
+# apt-get install matchbox
+apt-get install lxde
+apt-get install synaptic
+
+# cleanup
+
+apt-get autoclean
 
 # save a snapshot of the resulting system (copy from this SD to some server)
 # rm /boot/*.tbz
