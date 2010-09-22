@@ -15,7 +15,8 @@ if false
 	umount "$DEST"
 	mkdir -p "$DEST"
 	## make sure it mounts as a jffs2 or yaffs2
-	/mount /dev/mtdblock3 "$DEST"
+	## flash erase
+	/bin/mount -t jffs2 /dev/mtdblock3 "$DEST"
 	fi
 
 rm -rf "$DEST"
@@ -38,11 +39,10 @@ apt-get -y update
 
 # make sure we have installed additional tools
 
-apt-get install -y busybox
+apt-get install -y busybox bzip2
 
 # copy only what we need
 # NOTES
-#   - FIXME: copy latest kernel modules only and only those we really need
 #   - to find out which libraries are required: ldd /bin/busybox
 #	- FIXME: we need a (minimal) /dev file system and run udevd
 
@@ -58,14 +58,17 @@ apt-get install -y busybox
 	etc/passwd \
 	etc/resolv.conf \
 	etc/udev \
-	lib/modules/2.6.24.3* \
+	lib/modules/$(uname -r) \
+	sbin/udevd \
+	root/recover \
+	-h \
 	lib/ld.so.1 \
 	lib/libc.so.6 lib/libm.so.6 \
 	lib/libdl.so.2 \
 	lib/libselinux.so.1 \
-	sbin/udevd \
-	root/recover
 	) | (cd "$DEST" && tar xvzf - )
+
+cp flash_eraseall "$DEST/sbin"
 
 busybox | (
 while read LINE
@@ -88,8 +91,13 @@ while read LINE
 	done
 )
 
-ln -s /bin/sh "$DEST/bin/bash"	# pretend to be one...
+# ln -s /bin/sh "$DEST/bin/bash"	# pretend to be one...
 
 # save a snapshot of the resulting system
 rm -f minifs.tbz
 tar cvjf minifs.tbz -C "$DEST" .
+
+# print sum of all files - should remain below 5M (may need a larger physical device because of different block size!)
+du -sh /mnt/minifs
+#and of compressed image
+ls -l minifs.tbz

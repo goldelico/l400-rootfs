@@ -4,39 +4,43 @@
 #
 # this is part of Lenny400
 #
-# script to be run after first install to upgrade bootstrapped image to final image
+# run this script after first install to upgrade the bootstrapped image to a useful image
 #
 
 umount /dev
 rm -rf /dev/.udev	# this is debris from bootstrapping
 depmod -a
-apt-get update
-date 010100002015	# get rid of 'in the future' warnings from tar
+apt-get update		# get latest package list
+date 010100002015	# get rid of 'in the future' warnings from tar until we have ntp
 
 # command line tools
 
 apt-get install -y ntp
 apt-get install -y udev
 apt-get install -y dnsutils
+apt-get install -y mtd-utils
 apt-get install -y usbmount
 # apt-get install -y zd1211-firmware	# does not work on mipsel
+apt-get install -y wireless-tools
 apt-get install -y bluez-utils
 apt-get install -y openssh-server openssh-client
-apt-get install -y usb_modeswitch
+apt-get install -y usb-modeswitch-data/testing usb-modeswitch/testing
 
-# add any GUI components to load here
+# add any GUI components you want to load here
 
-# apt-get install gnome-core gdm
-# apt-get install kde-core kdm
-# apt-get install xfce4
-# apt-get install gdm
-# apt-get install matchbox
-apt-get install lxde
-apt-get install synaptic
+# apt-get install -y gnome-core gdm
+# apt-get install -y kde-core kdm
+# apt-get install -y xfce4
+# apt-get install -y gdm
+# apt-get install -y matchbox
+apt-get install -y lxde
+# apt-get install -y synaptic
+# apt-get install -y QuantumSTEP
 
 # cleanup
 
-apt-get autoclean
+apt-get -y autoremove
+apt-get -y autoclean
 
 # save a snapshot of the resulting system (copy from this SD to some server)
 # rm /boot/*.tbz

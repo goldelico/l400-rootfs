@@ -42,11 +42,15 @@ function install	# install package
 			## analyse contents, i.e. file "$1"
 	esac
 
+## stty - so that we can't close/ctrl-C
+
 while true
 do
+	MAC=$(cut -b 1-17 </dev/mtdblock2)	# Mac address
 	clear
-	echo "*** RECOVERY SYSTEM ***"
-	cut -b 1-17 </dev/mtdblock2	# Mac address
+	echo "*** Lenny 400 RECOVERY SYSTEM ***"
+	echo "*** Ethernet Mac Address: $MAC ***"
+	
 	echo
 	echo "1) show partitions"
 	echo "2) list recovery files"
@@ -60,7 +64,12 @@ do
 	read CMD
 	case $CMD i
 		1 )
-			# list all partitions and try to figure out what they contain and if they are sane
+			# list all partitions and try to figure out what they already contain and if they are sane
+			cat /proc/mtd | while READ MTD SIZE ERASE NAME
+				do
+				## strip off : from mtd name if we want to analyse contents
+				echo $MTD $NAME
+				done
 			;;
 		2 )
 			clear
@@ -70,9 +79,6 @@ do
 			# file.jffs2
 			# file.tgz
 			# file.tbz
-			echo
-			echo -n "continue: "
-			read CMD
 			;;
 		3 )
 			umount /dev/mtdblock1
@@ -81,12 +87,16 @@ do
 		4 )
 			;;
 		q | Q )
-		# problem: will not be able to reboot kernel from SD card
+		# problem: will not be able to reboot kernel from SD card unless users presses Fn+Left-Shift
+			echo "Please press Fn + Left-Shift before reboot"
 			shutdown -r now
 			;;
 		f | F )
 #			fsck /dev/mtdblock4
 #			fsck /dev/mtdblock5
 	esac
+	echo
+	echo -n "continue: "
+	read CMD
 done
 		

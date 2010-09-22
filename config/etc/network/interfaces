@@ -5,12 +5,15 @@ auto lo
 iface lo inet loopback
 
 # builtin ethernet
-auto eth0 
+allow-hotplug eth0
+# auto eth0 
 iface eth0 inet dhcp
 
 # builtin WLAN
-auto eth1 
+# auto eth1
 iface eth1 inet dhcp
-wpa-driver zydas
+pre-up sh -c 'echo 1 >/proc/jz/wifi-power'
+post-down sh -c 'echo 0 >/proc/jz/wifi-power'
+wpa-driver zd1211
 wpa-conf /etc/wpa_supplicant.conf
 
